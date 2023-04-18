@@ -1,11 +1,26 @@
 const router = require('express').Router();
 const User = require('../models/User');
+const express = require('express');
 const bcrypt = require('bcrypt');
+const cors = require('cors');
+
+const app = express();
+
+// Allow all origins to access the API
+// app.use(cors());
+
+// Allow only specified origins to access the API
+app.use(cors({
+  origin: ['http://localhost:5000', 'http://localhost:3000']
+}));
+
+// Rest of your code goes here
+// ...
+
 
 // REGISTER
 router.post("/register", async (req, res) => {
 	try {
-		res.setHeader("Access-Control-Allow-Origin", "*"); // renders api vulnerable
 		const salt = await bcrypt.genSalt(10);
 		const hashedPass = await bcrypt.hash(req.body.password, salt);
 		const newUser = new User({
