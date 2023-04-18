@@ -2,6 +2,33 @@ const router = require("express").Router();
 const User = require("../models/User");
 const Post = require("../models/Post");
 
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+// Allow all origins to access the API
+// app.use(cors());
+
+// Allow only specified origins to access the API
+app.use(cors({
+  origin: ['http://localhost:5000', 'http://localhost:3000']
+}));
+
+
+
+
+// Set up CORS headers
+app.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+// Your routes and middleware here...
+
+
+
 //CREATE POST
 router.post("/", async (req, res) => {
   const newPost = new Post(req.body);
@@ -57,10 +84,15 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+
+
+
 //GET POST
 router.get("/:id", async (req, res) => {
   try {
-		res.setHeader("Access-Control-Allow-Origin", "*"); // renders api vulnerable
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     const post = await Post.findById(req.params.id);
     res.status(200).json(post);
   } catch (err) {

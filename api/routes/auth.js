@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const User = require('../models/User');
-const express = require('express');
 const bcrypt = require('bcrypt');
-const cors = require('cors');
 
+const express = require('express');
 const app = express();
+const cors = require('cors');
 
 // Allow all origins to access the API
 // app.use(cors());
@@ -14,13 +14,10 @@ app.use(cors({
   origin: ['http://localhost:5000', 'http://localhost:3000']
 }));
 
-// Rest of your code goes here
-// ...
-
-
 // REGISTER
 router.post("/register", async (req, res) => {
 	try {
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:5000");
 		const salt = await bcrypt.genSalt(10);
 		const hashedPass = await bcrypt.hash(req.body.password, salt);
 		const newUser = new User({
@@ -40,7 +37,7 @@ router.post("/register", async (req, res) => {
 // LOGIN
 router.post('/login', async (req, res) => {
 	try {
-		res.setHeader("Access-Control-Allow-Origin", "*"); // renders api vulnerable
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:5000");
 		const user = await User.findOne({username: req.body.username})
 		!user && res.status(400).json("Wrong credentials!")
 

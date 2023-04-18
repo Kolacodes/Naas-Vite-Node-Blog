@@ -8,6 +8,15 @@ const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
 const path = require('path');
+const cors = require('cors');
+
+// Allow all origins to access the API
+// app.use(cors());
+
+// Allow only specified origins to access the API
+app.use(cors({
+  origin: ['http://localhost:5000', 'http://localhost:3000']
+}));
 
 
 dotenv.config();
@@ -30,8 +39,11 @@ const storage = multer.diskStorage({
 	},
   });
   
+
+  
   const upload = multer({ storage: storage });
   app.post("/api/upload", upload.single("file"), (req, res) => {
+	res.setHeader("Access-Control-Allow-Origin", "http://localhost:5000");
 	res.status(200).json("File has been uploaded");
 	// console.log("File has been uploaded");
   });
