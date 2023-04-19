@@ -9,7 +9,6 @@ const categoryRoute = require("./routes/categories");
 const multer = require("multer");
 const path = require('path');
 const cors = require('cors');
-const ejs = require('ejs');
 
 
 // Allow all origins to access the API
